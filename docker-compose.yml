@@ -1,0 +1,77 @@
+version: "3"
+services:
+  #PHP Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: digitalocean.com/php
+    container_name: digitalhouse-api
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app-digitalhouse
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - /home/dida/Documentos/docker-volumes/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app-network
+
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: webserver-digitalhouse
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - /home/dida/Documentos/docker-volumes/nginx/conf.d/:/etc/nginx/conf.d/
+      - /home/dida/Documentos/docker-volumes/nginx/nginx.conf:/etc/nginx/nginx.conf
+      # docker container exec -it webserver-blackboard sh
+    networks:
+      - app-network
+
+  #MySQL Service
+  db:
+    image: mysql:5.7.28
+    container_name: db-digitalhouse
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: laravel-digitalhouse
+      MYSQL_ROOT_PASSWORD: dida
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - dbdata:/var/lib/mysql/
+      #- /home/dida/Documentos/docker-volumes/mysql_57/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - app-network
+
+  redis:
+    image: redis:4.0.5-alpine
+    container_name: redis-digitalhouse
+    command: ["redis-server", "--appendonly", "yes"]
+    hostname: redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - app-network
+    volumes:
+      - /home/dida/Documentos/docker-volumes/redis_405:/data
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+#Volumes
+volumes:
+  dbdata:
+    driver: local
