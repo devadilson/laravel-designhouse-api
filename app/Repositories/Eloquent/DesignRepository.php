@@ -7,11 +7,10 @@ use Illuminate\Http\Request;
 use App\Repositories\Contracts\IDesign;
 use App\Repositories\Eloquent\BaseRepository;
 
-class DesignRepository implements IDesign
+class DesignRepository extends BaseRepository implements IDesign
 {
-
-  public function all()
+  public function model()
   {
-    return Design::all();
+    return Design::class;
   }
 }
