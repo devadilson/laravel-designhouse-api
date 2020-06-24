@@ -2,8 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 
-// Public routes
-Route::get('me', 'User\MeController@getMe');
+// designs
+Route::get('designs', 'Designs\DesignController@index');
+Route::get('designs/{id}', 'Designs\DesignController@findDesign');
+Route::get('designs/slug/{slug}', 'Designs\DesignController@findBySlug');
+
+// designs
+Route::get('designs', 'Designs\DesignController@index');
+
+//users
+Route::get('users', 'User\UserController@index');
+Route::get('user/{username}', 'User\UserController@findByUsername');
+Route::get('users/{id}/designs', 'Designs\DesignController@getForUser');
 
 // Route group for authenticated users only
 Route::group(['middleware' => ['auth:api']], function () {
