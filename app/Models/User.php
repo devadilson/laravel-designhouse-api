@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Design;
 use App\Notifications\VerifyEmail;
 use App\Notifications\ResetPassword;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -84,5 +85,10 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function designs()
+    {
+        return $this->hasMany(Design::class);
     }
 }

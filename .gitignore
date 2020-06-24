@@ -2,6 +2,9 @@
 /public/hot
 /public/storage
 /storage/*.key
+./storage/uploads/original/*
+./storage/uploads/large/*
+./storage/uploads/thumbnail/*
 /vendor
 .env
 .env.backup
