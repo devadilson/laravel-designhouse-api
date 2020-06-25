@@ -13,8 +13,10 @@ use Grimzy\LaravelMysqlSpatial\Types\Point;
 
 class SettingsController extends Controller
 {
+
   protected $users;
-  public function __construct(User $users)
+
+  public function __construct(IUser $users)
   {
     $this->users = $users;
   }
@@ -34,8 +36,7 @@ class SettingsController extends Controller
 
     $location = new Point($request->location['latitude'], $request->location['longitude']);
 
-
-    $user->update([
+    $user = $this->users->update(auth()->id(), [
       'name' => $request->name,
       'formatted_address' => $request->formatted_address,
       'location' => $location,
@@ -55,7 +56,7 @@ class SettingsController extends Controller
       'password' => ['required', 'confirmed', 'min:6', new CheckSamePassword],
     ]);
 
-    $this->users->update([
+    $this->users->update(auth()->id(), [
       'password' => bcrypt($request->password)
     ]);
 

@@ -16,13 +16,12 @@ class VerificationController extends Controller
 
     protected $users;
 
-
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(User $users)
+    public function __construct(IUser $users)
     {
         $this->middleware('throttle:6,1')->only('verify', 'resend');
         $this->users = $users;
@@ -56,8 +55,8 @@ class VerificationController extends Controller
             'email' => ['email', 'required']
         ]);
 
-        //$user = $this->users->findWhereFirst('email', $request->email);
-        $user = User::where('email', $request->email)->first();
+        $user = $this->users->findWhereFirst('email', $request->email);
+        // $user = User::where('email', $request->email)->first();
 
         if (!$user) {
             return response()->json(["errors" => [
