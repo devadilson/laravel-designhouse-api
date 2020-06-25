@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+// Public routes
+Route::get('me', 'User\MeController@getMe');
 
 // designs
 Route::get('designs', 'Designs\DesignController@index');
@@ -25,6 +26,11 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('designs', 'Designs\UploadController@upload');
     Route::put('designs/{id}', 'Designs\DesignController@update');
     Route::get('designs/{id}/byUser', 'Designs\DesignController@userOwnsDesign');
+
+    // Comments
+    Route::post('designs/{id}/comments', 'Designs\CommentController@store');
+    Route::put('comments/{id}', 'Designs\CommentController@update');
+    Route::delete('comments/{id}', 'Designs\CommentController@destroy');
 
     Route::delete('designs/{id}', 'Designs\DesignController@destroy');
 });
