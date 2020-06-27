@@ -16,6 +16,10 @@ Route::get('users', 'User\UserController@index');
 Route::get('user/{username}', 'User\UserController@findByUsername');
 Route::get('users/{id}/designs', 'Designs\DesignController@getForUser');
 
+// Team
+Route::get('teams/slug/{slug}', 'Teams\TeamsController@findBySlug');
+Route::get('teams/{id}/designs', 'Designs\DesignController@getForTeam');
+
 // Route group for authenticated users only
 Route::group(['middleware' => ['auth:api']], function () {
     Route::post('logout', 'Auth\LoginController@logout');
@@ -27,6 +31,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::put('designs/{id}', 'Designs\DesignController@update');
     Route::get('designs/{id}/byUser', 'Designs\DesignController@userOwnsDesign');
 
+    Route::delete('designs/{id}', 'Designs\DesignController@destroy');
+
     // Likes and Unlikes
     Route::post('designs/{id}/like', 'Designs\DesignController@like');
     Route::get('designs/{id}/liked', 'Designs\DesignController@checkIfUserHasLiked');
@@ -36,7 +42,14 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::put('comments/{id}', 'Designs\CommentController@update');
     Route::delete('comments/{id}', 'Designs\CommentController@destroy');
 
-    Route::delete('designs/{id}', 'Designs\DesignController@destroy');
+    // Teams
+    Route::post('teams', 'Teams\TeamsController@store');
+    Route::get('teams/{id}', 'Teams\TeamsController@findById');
+    Route::get('teams', 'Teams\TeamsController@index');
+    Route::get('users/teams', 'Teams\TeamsController@fetchUserTeams');
+    Route::put('teams/{id}', 'Teams\TeamsController@update');
+    Route::delete('teams/{id}', 'Teams\TeamsController@destroy');
+    Route::delete('teams/{team_id}/users/{user_id}', 'Teams\TeamsController@removeFromTeam');
 });
 
 // Routes for guests only

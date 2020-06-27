@@ -55,6 +55,37 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         'available_to_hire' => 'boolean'
     ];
 
+    public function designs()
+    {
+        return $this->hasMany(Design::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    // teams that the user belongs to
+    public function teams()
+    {
+        return $this->belongsToMany(Team::class)
+            ->withTimestamps();
+    }
+
+    public function ownedTeams()
+    {
+        return $this->teams()
+            ->where('owner_id', $this->id);
+    }
+
+    public function isOwnerOfTeam($team)
+    {
+        return (bool) $this->teams()
+            ->where('id', $team->id)
+            ->where('owner_id', $this->id)
+            ->count();
+    }
+
     public function sendEmailVerificationNotification()
     {
         $this->notify(new VerifyEmail);
@@ -85,10 +116,5 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function getJWTCustomClaims()
     {
         return [];
-    }
-
-    public function designs()
-    {
-        return $this->hasMany(Design::class);
     }
 }

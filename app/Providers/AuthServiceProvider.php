@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Team;
 use App\Models\Design;
 use App\Models\Comment;
+use App\Policies\TeamPolicy;
 use App\Policies\DesignPolicy;
 use App\Policies\CommentPolicy;
 use Illuminate\Support\Facades\Gate;
@@ -20,6 +22,7 @@ class AuthServiceProvider extends ServiceProvider
         // 'App\Model' => 'App\Policies\ModelPolicy',
         Design::class => DesignPolicy::class,
         Comment::class => CommentPolicy::class,
+        Team::class => TeamPolicy::class,
     ];
 
     /**

@@ -7,11 +7,13 @@ use App\Repositories\Contracts\{
   IComment,
   IDesign,
   IUser,
+  ITeam
 };
 use App\Repositories\Eloquent\{
   DesignRepository,
   UserRepository,
-  CommentRepository
+  CommentRepository,
+  TeamRepository
 };
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -36,5 +38,6 @@ class RepositoryServiceProvider extends ServiceProvider
     $this->app->bind(IDesign::class, DesignRepository::class);
     $this->app->bind(IUser::class, UserRepository::class);
     $this->app->bind(IComment::class, CommentRepository::class);
+    $this->app->bind(ITeam::class, TeamRepository::class);
   }
 }
