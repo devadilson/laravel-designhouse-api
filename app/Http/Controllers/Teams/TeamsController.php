@@ -8,19 +8,23 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\TeamResource;
 use App\Repositories\Contracts\ITeam;
 use App\Repositories\Contracts\IUser;
+use App\Repositories\Contracts\IInvitation;
 
 class TeamsController extends Controller
 {
 
   protected $teams;
   protected $users;
+  protected $invitations;
 
   public function __construct(
     ITeam $teams,
-    IUser $users
+    IUser $users,
+    IInvitation $invitations
   ) {
     $this->teams = $teams;
     $this->users = $users;
+    $this->invitations = $invitations;
   }
 
   /**

@@ -55,6 +55,16 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         'available_to_hire' => 'boolean'
     ];
 
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmail);
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPassword($token));
+    }
+
     public function designs()
     {
         return $this->hasMany(Design::class);
@@ -86,15 +96,13 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
             ->count();
     }
 
-    public function sendEmailVerificationNotification()
+    // Relationships for invitations
+    public function invitations()
     {
-        $this->notify(new VerifyEmail);
+        return $this->hasMany(Invitation::class, 'recipient_email', 'email');
     }
 
-    public function sendPasswordResetNotification($token)
-    {
-        $this->notify(new ResetPassword($token));
-    }
+
 
     // Rest omitted for brevity
 
