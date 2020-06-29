@@ -22,6 +22,7 @@ class UserResource extends JsonResource
         'email' => $this->email,
       ]),
       'name' => $this->name,
+      'photo_url' => $this->photo_url,
       'designs' => DesignResource::collection(
         $this->whenLoaded('designs')
       ),

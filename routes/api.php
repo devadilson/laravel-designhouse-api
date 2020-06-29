@@ -20,6 +20,10 @@ Route::get('users/{id}/designs', 'Designs\DesignController@getForUser');
 Route::get('teams/slug/{slug}', 'Teams\TeamsController@findBySlug');
 Route::get('teams/{id}/designs', 'Designs\DesignController@getForTeam');
 
+// Search Designs
+Route::get('search/designs', 'Designs\DesignController@search');
+Route::get('search/designers', 'User\UserController@search');
+
 // Route group for authenticated users only
 Route::group(['middleware' => ['auth:api']], function () {
     Route::post('logout', 'Auth\LoginController@logout');
