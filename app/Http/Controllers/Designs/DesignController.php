@@ -11,6 +11,7 @@ use App\Repositories\Contracts\IDesign;
 use Illuminate\Support\Facades\Storage;
 use App\Repositories\Eloquent\Criteria\{
   IsLive,
+  IsDraft,
   LatestFirst,
   ForUser,
   EagerLoad
@@ -125,7 +126,22 @@ class DesignController extends Controller
   public function getForUser($userId)
   {
     $designs = $this->designs
-      //->withCriteria([new IsLive()])
+      ->findWhere('user_id', $userId);
+    return DesignResource::collection($designs);
+  }
+
+  public function getForUserPublished($userId)
+  {
+    $designs = $this->designs
+      ->withCriteria([new IsLive()])
+      ->findWhere('user_id', $userId);
+    return DesignResource::collection($designs);
+  }
+
+  public function getForUserDraft($userId)
+  {
+    $designs = $this->designs
+      ->withCriteria([new IsDraft()])
       ->findWhere('user_id', $userId);
     return DesignResource::collection($designs);
   }
