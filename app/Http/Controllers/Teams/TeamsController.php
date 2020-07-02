@@ -6,9 +6,13 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TeamResource;
+use App\Models\Team;
 use App\Repositories\Contracts\ITeam;
 use App\Repositories\Contracts\IUser;
 use App\Repositories\Contracts\IInvitation;
+use App\Repositories\Eloquent\Criteria\{
+  LatestFirst,
+};
 
 class TeamsController extends Controller
 {
@@ -30,8 +34,12 @@ class TeamsController extends Controller
   /**
    * Get list of all teams (eg for Search)
    */
-  public function index(Request $request)
+  public function index()
   {
+    $teams = $this->teams->withCriteria([
+      new LatestFirst(),
+    ])->all();
+    return TeamResource::collection($teams);
   }
 
   /**
