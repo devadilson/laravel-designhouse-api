@@ -21,7 +21,11 @@ class TeamResource extends JsonResource
       'slug' => $this->slug,
       'designs' => DesignResource::collection($this->designs),
       'owner' => new UserResource($this->owner),
-      'member' => UserResource::collection($this->members)
+      'member' => UserResource::collection($this->members),
+      'created_at_dates' => [
+        'created_at_human' => $this->created_at->diffForHumans(),
+        'created_at' => $this->created_at
+      ],
     ];
   }
 }
