@@ -1,34 +1,39 @@
 <?php
 
-// Public routes
-Route::get('me', 'User\MeController@getMe');
+// Route group for authenticated users only
+Route::group(['prefix' => 'v1'], function () {
+    // Public routes
+    Route::get('me', 'User\MeController@getMe');
 
-// designs
-Route::get('designs', 'Designs\DesignController@index');
-Route::get('designs/{id}', 'Designs\DesignController@findDesign');
-Route::get('designs/slug/{slug}', 'Designs\DesignController@findBySlug');
+    // designs
+    Route::get('designs', 'Designs\DesignController@index');
+    Route::get('designs/{id}', 'Designs\DesignController@findDesign');
+    Route::get('designs/slug/{slug}', 'Designs\DesignController@findBySlug');
 
-// designs
-Route::get('designs', 'Designs\DesignController@index');
+    // designs
+    Route::get('designs', 'Designs\DesignController@index');
 
-//users
-Route::get('users', 'User\UserController@index');
-Route::get('user/{username}', 'User\UserController@findByUsername');
-Route::get('users/{id}/designs', 'Designs\DesignController@getForUser');
-Route::get('users/{id}/published', 'Designs\DesignController@getForUserPublished');
-Route::get('users/{id}/draft', 'Designs\DesignController@getForUserDraft');
+    //users
+    Route::get('users', 'User\UserController@index');
+    Route::get('user/{username}', 'User\UserController@findByUsername');
 
-// Team
-Route::get('teams', 'Teams\TeamsController@index');
-Route::get('teams/slug/{slug}', 'Teams\TeamsController@findBySlug');
-Route::get('teams/{id}/designs', 'Designs\DesignController@getForTeam');
+    Route::get('users/{id}/designs', 'Designs\DesignController@getForUser');
+    Route::get('users/{id}/published', 'Designs\DesignController@getForUserPublished');
+    Route::get('users/{id}/draft', 'Designs\DesignController@getForUserDraft');
 
-// Search Designs
-Route::get('search/designs', 'Designs\DesignController@search');
-Route::get('search/designers', 'User\UserController@search');
+    // Team
+    Route::get('teams', 'Teams\TeamsController@index');
+    Route::get('teams/slug/{slug}', 'Teams\TeamsController@findBySlug');
+    Route::get('teams/{id}/designs', 'Designs\DesignController@getForTeam');
+
+    // Search Designs
+    Route::get('search/designs', 'Designs\DesignController@search');
+    Route::get('search/designers', 'User\UserController@search');
+});
+
 
 // Route group for authenticated users only
-Route::group(['middleware' => ['auth:api']], function () {
+Route::group(['prefix' => 'v1', 'middleware' => ['auth:api']], function () {
     Route::post('logout', 'Auth\LoginController@logout');
     Route::put('settings/profile', 'User\SettingsController@updateProfile');
     Route::put('settings/password', 'User\SettingsController@updatePassword');
@@ -53,7 +58,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('teams', 'Teams\TeamsController@store');
     Route::get('teams/{id}', 'Teams\TeamsController@findById');
     Route::get('users/teams', 'Teams\TeamsController@fetchUserTeams');
-    Route::put('teams/{id}', 'Teams\TeamsController@update');
+    Route::put('eams/{id}', 'Teams\TeamsController@update');
     Route::delete('teams/{id}', 'Teams\TeamsController@destroy');
     Route::delete('teams/{team_id}/users/{user_id}', 'Teams\TeamsController@removeFromTeam');
 
@@ -72,7 +77,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 });
 
 // Routes for guests only
-Route::group(['middleware' => ['guest:api']], function () {
+Route::group(['prefix' => 'v1', 'middleware' => ['guest:api']], function () {
     Route::post('register', 'Auth\RegisterController@register');
     Route::post('verification/verify/{user}', 'Auth\VerificationController@verify')->name('verification.verify');
     Route::post('verification/resend', 'Auth\VerificationController@resend');
