@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Teams;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TeamResource;
-use App\Models\Team;
 use App\Repositories\Contracts\ITeam;
 use App\Repositories\Contracts\IUser;
 use App\Repositories\Contracts\IInvitation;
@@ -113,12 +113,28 @@ class TeamsController extends Controller
   }
 
   /**
+   * Get team by querystring for Public view
+   */
+  public function search(Request $request)
+  {
+    $teams = $this->teams->search($request);
+    return TeamResource::collection($teams);
+  }
+
+  /**
    * Destroy (delete) a team
    */
   public function destroy($id)
   {
     $team = $this->teams->find($id);
     $this->authorize('delete', $team);
+    // delete the files associated to the record
+    foreach (['thumbnail', 'large', 'original'] as $size) {
+      // check if the file exists in the database
+      if (Storage::disk($team->disk)->exists("uploads/teams/{$size}/" . $team->image)) {
+        Storage::disk($team->disk)->delete("uploads/teams/{$size}/" . $team->image);
+      }
+    }
 
     $team->delete();
 

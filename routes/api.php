@@ -29,6 +29,7 @@ Route::group(['prefix' => 'v1'], function () {
     // Search Designs
     Route::get('search/designs', 'Designs\DesignController@search');
     Route::get('search/designers', 'User\UserController@search');
+    Route::get('search/teams', 'Teams\TeamsController@search');
 });
 
 
