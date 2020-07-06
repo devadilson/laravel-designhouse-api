@@ -55,10 +55,11 @@ Route::group(['prefix' => 'v1', 'middleware' => ['auth:api']], function () {
     Route::delete('comments/{id}', 'Designs\CommentController@destroy');
 
     // Teams
-    Route::post('teams', 'Teams\TeamsController@store');
+    Route::post('teams', 'Teams\UploadController@upload');
+    //Route::post('teams', 'Teams\TeamsController@store');
     Route::get('teams/{id}', 'Teams\TeamsController@findById');
     Route::get('users/teams', 'Teams\TeamsController@fetchUserTeams');
-    Route::put('eams/{id}', 'Teams\TeamsController@update');
+    Route::put('teams/{id}', 'Teams\TeamsController@update');
     Route::delete('teams/{id}', 'Teams\TeamsController@destroy');
     Route::delete('teams/{team_id}/users/{user_id}', 'Teams\TeamsController@removeFromTeam');
 

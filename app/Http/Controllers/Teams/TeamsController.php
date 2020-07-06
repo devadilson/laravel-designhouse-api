@@ -70,6 +70,7 @@ class TeamsController extends Controller
   public function update(Request $request, $id)
   {
     $team = $this->teams->find($id);
+
     $this->authorize('update', $team);
 
     $this->validate($request, [
