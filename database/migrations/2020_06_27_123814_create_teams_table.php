@@ -15,9 +15,12 @@ class CreateTeamsTable extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('slug')->unique()->index();
+            $table->string('name')->nullable();
+            $table->string('slug')->nullable();
             $table->bigInteger('owner_id')->unsigned();
+            $table->string('image');
+            $table->string('disk')->default('public');
+            $table->boolean('upload_successful')->default(false);
             $table->timestamps();
 
             $table->foreign('owner_id')
@@ -49,7 +52,7 @@ class CreateTeamsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('team_users');
+        Schema::dropIfExists('team_user');
         Schema::dropIfExists('teams');
     }
 }

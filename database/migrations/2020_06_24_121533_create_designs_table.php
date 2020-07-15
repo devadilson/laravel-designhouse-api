@@ -16,6 +16,7 @@ class CreateDesignsTable extends Migration
         Schema::create('designs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('team_id')->unsigned()->nullable();
             $table->string('image');
             $table->string('title')->nullable();
             $table->string('description')->nullable();
