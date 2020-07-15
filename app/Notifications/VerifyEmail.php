@@ -20,6 +20,6 @@ class VerifyEmail extends Notification
             ['user' => $notifiable->id]
         );
 
-        return str_replace(url('/api'), $appUrl, $url);
+        return str_replace(url('/api/v1'), $appUrl, $url);
     }
 }
