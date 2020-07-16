@@ -118,12 +118,7 @@ class DesignController extends Controller
   public function findByTag($tag)
   {
     // find design for tags
-    //$designs = $this->designs->findDesignByTag($tag);
-
     $designs = $this->designs->findDesignByTag($tag);
-
-    //dd($designs);
-
     return DesignResource::collection($designs);
   }
 
@@ -163,7 +158,6 @@ class DesignController extends Controller
     $design = $this->designs->withCriteria(
       [new ForUser(auth()->id())]
     )->findWhereFirst('id', $id);
-
     return new DesignResource($design);
   }
 }
