@@ -9,6 +9,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('designs', 'Designs\DesignController@index');
     Route::get('designs/{id}', 'Designs\DesignController@findDesign');
     Route::get('designs/slug/{slug}', 'Designs\DesignController@findBySlug');
+    Route::get('designs/tag/{tag}', 'Designs\DesignController@findByTag'); // FIND BY TAG
 
     // designs
     Route::get('designs', 'Designs\DesignController@index');

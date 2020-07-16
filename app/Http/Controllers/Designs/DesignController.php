@@ -115,6 +115,18 @@ class DesignController extends Controller
     return new DesignResource($design);
   }
 
+  public function findByTag($tag)
+  {
+    // find design for tags
+    //$designs = $this->designs->findDesignByTag($tag);
+
+    $designs = $this->designs->findDesignByTag($tag);
+
+    //dd($designs);
+
+    return DesignResource::collection($designs);
+  }
+
   public function getForTeam($teamId)
   {
     $designs = $this->designs

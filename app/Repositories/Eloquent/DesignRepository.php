@@ -20,6 +20,11 @@ class DesignRepository extends BaseRepository implements IDesign
     $design->retag($data);
   }
 
+  public function findDesignByTag($tag)
+  {
+    return $this->model::withAllTags($tag)->where('is_live', true)->with(['user', 'comments'])->get();
+  }
+
   public function addComment($designId, array $data)
   {
     // get the design for which we want to create a comment
