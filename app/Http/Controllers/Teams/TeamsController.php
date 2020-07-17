@@ -117,6 +117,11 @@ class TeamsController extends Controller
    */
   public function search(Request $request)
   {
+    // get UserId the Owners
+    if ($request->has_owner) {
+      $owner =  $this->users->findWhereLike('name', $request->q);
+      $request->merge(['owner_id' => $owner->id]);
+    }
     $teams = $this->teams->search($request);
     return TeamResource::collection($teams);
   }
@@ -162,7 +167,7 @@ class TeamsController extends Controller
       auth()->id() !== $user->id
     ) {
       return response()->json([
-        'message' => 'You cannot do this'
+        'message' => 'You cannot do this!'
       ], 401);
     }
 

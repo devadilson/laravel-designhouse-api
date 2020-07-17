@@ -34,6 +34,11 @@ abstract class BaseRepository implements IBase, ICriteria
     return $this->model->where($column, $value)->get();
   }
 
+  public function findWhereLike($column, $value)
+  {
+    return $this->model->where($column, 'like', '%' . $value . '%')->first();
+  }
+
   public function findWhereFirst($column, $value)
   {
     return $this->model->where($column, $value)->firstOrFail();

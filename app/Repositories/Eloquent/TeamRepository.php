@@ -27,10 +27,13 @@ class TeamRepository extends BaseRepository implements ITeam
     // return only designs assigned to teams
     if ($request->has_owner) {
       $query->has('owner');
+      $query->where(function ($q) use ($request) {
+        $q->where('owner_id', $request->owner_id);
+      });
     }
 
     // search name and owner for provided string
-    if ($request->q) {
+    if (!$request->has_owner && $request->q) {
       $query->where(function ($q) use ($request) {
         $q->where('name', 'like', '%' . $request->q . '%');
       });
