@@ -103,6 +103,13 @@ class TeamsController extends Controller
     return TeamResource::collection($teams);
   }
 
+  public function fetchUserTeamsByUsername($username)
+  {
+    $user =  $this->users->findWhereLike('username', $username);
+    $teams = $this->teams->fetchUserTeamsByUsername($user);
+    return TeamResource::collection($teams);
+  }
+
   /**
    * Get team by slug for Public view
    */

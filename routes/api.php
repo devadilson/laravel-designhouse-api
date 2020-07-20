@@ -26,6 +26,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('teams', 'Teams\TeamsController@index');
     Route::get('teams/slug/{slug}', 'Teams\TeamsController@findBySlug');
     Route::get('teams/{id}/designs', 'Designs\DesignController@getForTeam');
+    Route::get('users/{username}/teams', 'Teams\TeamsController@fetchUserTeamsByUsername');
 
     // Search Designs
     Route::get('search/designs', 'Designs\DesignController@search');
