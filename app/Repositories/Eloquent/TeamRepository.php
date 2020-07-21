@@ -3,7 +3,6 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Team;
-use App\Models\User;
 use Illuminate\Http\Request;
 use App\Repositories\Contracts\ITeam;
 use App\Repositories\Eloquent\BaseRepository;
